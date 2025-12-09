@@ -36,6 +36,25 @@ body,input, textarea, select, button{
 ::selection{
   background-color: var(--color-accent);
 }
+#smooth-wrapper {
+  overflow: hidden;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+#smooth-content {
+  overflow: visible;
+  width: 100%;
+}
+#smooth-wrapper,
+#smooth-content {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
 .loader {
   position: fixed;
   top: 0;

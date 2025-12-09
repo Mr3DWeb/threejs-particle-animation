@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import  Lenis from 'lenis';
+import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x222831)
@@ -15,16 +15,20 @@ const renderer = new THREE.WebGLRenderer({
   antialias:true,
   alpha:true
 });
-renderer.setSize(window.innerWidth,innerHeight);
+renderer.setSize(window.innerWidth,window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 
-window.addEventListener('resize',() => {
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth,innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-})
-
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    ScrollTrigger.refresh();
+  }, 250);
+});
 //--------------------------- JS ------------------------------
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -36,7 +40,7 @@ function loadImage(src) {
   });
 }
 
-function getImageParticles(img, numParticles) {
+function getImageParticles(img) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = img.width;
@@ -75,13 +79,25 @@ const animationObj = {
 };
 
 //----------------------------Three js-------------------------
+//init gsap scroll
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+const smoother = ScrollSmoother.create({
+  wrapper: "#smooth-wrapper",
+  content: "#smooth-content",
+  smooth: 2.5,
+  effects: true,
+  normalizeScroll: true,
+  ignoreMobileResize: true,
+  smoothTouch: 0.1
+});
+//loadimage
 loadImage('phone.png').then((phoneImg) => {
 //-----Particels
 const pGeo = new THREE.BufferGeometry();
 const pCount = 2000;
 const pColor = 0x00ADB5;
 const pPosition = new Float32Array(pCount * 3);
-const rawPhonePoints = getImageParticles(phoneImg, 2000)
+const rawPhonePoints = getImageParticles(phoneImg)
 
 
 const spherePositions = [];
@@ -134,6 +150,7 @@ scene.add(window.particels);
 
 function updateGeo(){
   const positions = pGeo.attributes.position.array;
+
   for(let i = 0; i < pCount ; i++){
     const i3 = i * 3;
 
@@ -165,7 +182,6 @@ window.morphToSphere = function(){
 }
 //-----------------------------Gsap----------------------------
 //Scroll Trigger
-gsap.registerPlugin(ScrollTrigger);
 const targetColor = new THREE.Color(0xFF3333);
 const particelsScale = 2.5;
 const scrollTL = gsap.timeline({
@@ -174,22 +190,25 @@ const scrollTL = gsap.timeline({
     start:"top top",
     end:"bottom top",
     scrub:1,
-    pin:true
+    pin:true,
+    anticipatePin:1,
+    invalidateOnRefresh: true,
   }
 });
-scrollTL.to(animationObj,{
-  sphereProgress:0,
-  onUpdate:updateGeo,
-  ease:"power1.inOut"
-}).to(window.particels.scale,{
-  x:particelsScale,y:particelsScale,z:particelsScale,
-  ease:"power1.inOut"
-},"<").to(pMat.color,{
-  r:targetColor.r,
-  g:targetColor.g,
-  b:targetColor.b,
-  ease:"none"
-})
+scrollTL
+ .to(window.particels.scale, {
+      x: particelsScale, y: particelsScale, z: particelsScale,
+      ease: "power1.inOut"
+   }, 0)
+  .to(pMat.color, {
+      r: targetColor.r, g: targetColor.g, b: targetColor.b,
+      ease: "none"
+   }, 0)
+  .to(animationObj, {
+      sphereProgress: 0,
+      onUpdate: updateGeo,
+      ease: "none"
+  }, 0.1);
 //reveal text
 const revealContainers = document.querySelectorAll(".reveal-container");
 revealContainers.forEach((container)=>{
@@ -225,21 +244,21 @@ const PhoneTL = gsap.timeline({
 });
 PhoneTL
 .to(window.particels.position,{
-  x: -2,
-  duration:1,
+  x: -2.2,
+  duration:1.2,
   ease:"power2.inOut"
 })
 .to(window.particels.rotation,{
   y:-0.02,
   duration:1,
-  ease:"power2.inOut"
+  ease:"power2.inOut",
 },">")
 .to(animationObj,{
   phoneProgress:1,
   onUpdate:updateGeo,
   ease:"power2.inOut",
-  duration:1
-})
+  duration:1.5
+},">")
 .to(".split",{
   opacity:1,
   duration:1,
@@ -295,20 +314,7 @@ function animateHeroText(){
     stagger:0.2
   })
 }
-//Split Text
 
-//---------------------------Lenis-----------------------------
-const lenis = new Lenis({
-  duration:1.2,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smooth:true
-});
-//sync Gsap & Lenis
-lenis.on('scroll',ScrollTrigger.update);
-gsap.ticker.add((time)=>{
-  lenis.raf(time * 1000);
-});
-gsap.ticker.lagSmoothing(0);
 //-------------------------------------------------------------
 const clock = new THREE.Clock();
 function animate(){
@@ -316,7 +322,7 @@ function animate(){
   const elapsedTime = clock.getElapsedTime();
 
   //animate rotation
- if (animationObj.phoneProgress < 0.1) { 
+ if (animationObj.phoneProgress < 0.1 && window.particels) { 
     window.particels.rotation.y += 0.002; 
 }
 
