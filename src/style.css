@@ -1,0 +1,151 @@
+@font-face {
+  font-family:'Parkinsans';
+  src: url('../static//Font/Parkinsans-Medium.ttf');
+  font-weight: 500;
+}
+@font-face {
+  font-family:'Parkinsans';
+  src: url('../static//Font/Parkinsans-Bold.ttf');
+  font-weight: 700;
+}
+:root{
+  --font:'Parkinsans';
+  
+  --color-primary : #222831;
+  --color-secondary : #393E46;
+  --color-accent : #00ADB5;
+
+  --text-primary : #eeeeee;
+  --text-secondary : #b8bcc8;
+  --text-accent : #00adb5;
+  --text-inverse : #222831;
+
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  overflow-x: hidden;
+  background-color: transparent;
+}
+body,input, textarea, select, button{
+  font-family: var(--font);
+}
+::selection{
+  background-color: var(--color-accent);
+}
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+  background-color: var(--color-secondary);
+  z-index: 9999;
+}
+.loader svg {
+  width: 40vw;
+}
+.loader svg path{
+  fill: var(--text-secondary);
+  fill-opacity:0;
+  stroke: var(--text-primary);
+  stroke-width: 2px;
+}
+canvas{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+.pin-spacer {
+    pointer-events: none !important;
+}
+section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+  position: relative; 
+  z-index: 10;
+  pointer-events: none;
+  color: var(--text-primary);
+}
+section h1 , section h2 , section h3 , section p , section span {
+  pointer-events: auto;
+}
+section.hero div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+section.hero div h1 , section.hero div span {
+  opacity: 0;
+}
+section.about {
+  margin-top:20vh;
+  padding: 100px 20px;
+  color: var(--text-primary);
+}
+section.conect{
+  justify-content: flex-start;
+}
+section.conect div {
+    width: 60%;
+    text-align: center;
+}
+section.conect div h2{
+ font-size: 1rem;
+ margin-bottom: 15px;
+ color: var(--text-secondary);
+}
+.split {
+  display: block;
+  margin-bottom: 40px;
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+}
+.split:hover {
+  color: #ff4d4d;
+  transform: translateY(-5px) scale(1.05);
+  text-shadow: 0 0 15px rgba(255, 77, 77, 0.6), 
+               0 0 30px rgba(255, 77, 77, 0.4);
+}
+.reveal-warpper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 150px;
+}
+.reveal-container{
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 100px;
+}
+.reveal-text {
+  opacity: 0;
+}
+.reveal-black {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: #fff;
+  z-index: 2;
+}
