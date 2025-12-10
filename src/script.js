@@ -30,6 +30,14 @@ window.addEventListener('resize', () => {
   }, 250);
 });
 //--------------------------- JS ------------------------------
+function getResponsiveData(){
+  const width = window.innerWidth;
+  if(width <= 450){
+    return {r:1.5,pCount:1600,xPPosition:-5}
+  }else{
+    return {r:2,pCount:2000,xPPosition:-2}
+  }
+}
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -84,7 +92,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 const smoother = ScrollSmoother.create({
   wrapper: "#smooth-wrapper",
   content: "#smooth-content",
-  smooth: 2.5,
+  smooth: 2,
   effects: true,
   normalizeScroll: true,
   ignoreMobileResize: true,
@@ -92,9 +100,10 @@ const smoother = ScrollSmoother.create({
 });
 //loadimage
 loadImage('phone.png').then((phoneImg) => {
+const responsiveData = getResponsiveData();
 //-----Particels
 const pGeo = new THREE.BufferGeometry();
-const pCount = 2000;
+const pCount = responsiveData.pCount;
 const pColor = 0x00ADB5;
 const pPosition = new Float32Array(pCount * 3);
 const rawPhonePoints = getImageParticles(phoneImg)
@@ -108,7 +117,7 @@ for(let i = 0 ; i < pCount ; i++){
   const i3 = i * 3;
 
   //Sphere Position
-  const r = 2;
+  const r = responsiveData.r;
   const theta = Math.random() * Math.PI * 2;
   const phi = Math.acos((Math.random() * 2 ) -1 );
   const sx = r * Math.sin(phi) * Math.cos(theta); // x
@@ -183,7 +192,7 @@ window.morphToSphere = function(){
 //-----------------------------Gsap----------------------------
 //Scroll Trigger
 const targetColor = new THREE.Color(0xFF3333);
-const particelsScale = 2.5;
+const particelsScale = 2;
 const scrollTL = gsap.timeline({
   scrollTrigger:{
     trigger:".hero",
@@ -244,7 +253,7 @@ const PhoneTL = gsap.timeline({
 });
 PhoneTL
 .to(window.particels.position,{
-  x: -2.2,
+  x: responsiveData.xPPosition,
   duration:1.2,
   ease:"power2.inOut"
 })

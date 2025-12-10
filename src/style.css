@@ -1,39 +1,42 @@
 @font-face {
-  font-family:'Parkinsans';
+  font-family: 'Parkinsans';
   src: url('../static//Font/Parkinsans-Medium.ttf');
   font-weight: 500;
 }
 @font-face {
-  font-family:'Parkinsans';
+  font-family: 'Parkinsans';
   src: url('../static//Font/Parkinsans-Bold.ttf');
   font-weight: 700;
 }
-:root{
-  --font:'Parkinsans';
-  
-  --color-primary : #222831;
-  --color-secondary : #393E46;
-  --color-accent : #00ADB5;
+:root {
+  --font: 'Parkinsans';
 
-  --text-primary : #eeeeee;
-  --text-secondary : #b8bcc8;
-  --text-accent : #00adb5;
-  --text-inverse : #222831;
+  --color-primary: #222831;
+  --color-secondary: #393e46;
+  --color-accent: #00adb5;
 
+  --text-primary: #eeeeee;
+  --text-secondary: #b8bcc8;
+  --text-accent: #00adb5;
+  --text-inverse: #222831;
 }
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-body{
+body {
   overflow: hidden;
   background-color: transparent;
 }
-body,input, textarea, select, button{
+body,
+input,
+textarea,
+select,
+button {
   font-family: var(--font);
 }
-::selection{
+::selection {
   background-color: var(--color-accent);
 }
 #smooth-wrapper {
@@ -71,13 +74,13 @@ body,input, textarea, select, button{
 .loader svg {
   width: 40vw;
 }
-.loader svg path{
+.loader svg path {
   fill: var(--text-secondary);
-  fill-opacity:0;
+  fill-opacity: 0;
   stroke: var(--text-primary);
   stroke-width: 2px;
 }
-canvas{
+canvas {
   position: fixed;
   top: 0;
   left: 0;
@@ -86,48 +89,53 @@ canvas{
   z-index: 0;
 }
 .pin-spacer {
-    pointer-events: none !important;
+  pointer-events: none !important;
 }
-section{
+section {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100vh;
   padding: 20px;
-  position: relative; 
+  position: relative;
   z-index: 10;
   pointer-events: none;
   color: var(--text-primary);
 }
-section h1 , section h2 , section h3 , section p , section span {
+section h1,
+section h2,
+section h3,
+section p,
+section span {
   pointer-events: auto;
 }
-section.hero div{
+section.hero div {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-section.hero div h1 , section.hero div span {
+section.hero div h1,
+section.hero div span {
   opacity: 0;
 }
 section.about {
-  margin-top:20vh;
+  margin-top: 20vh;
   padding: 100px 20px;
   color: var(--text-primary);
 }
-section.conect{
+section.conect {
   justify-content: flex-start;
 }
 section.conect div {
-    width: 60%;
-    text-align: center;
+  width: 60%;
+  text-align: center;
 }
-section.conect div h2{
- font-size: 1rem;
- margin-bottom: 15px;
- color: var(--text-secondary);
+section.conect div h2 {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: var(--text-secondary);
 }
 section.conect div span {
   display: block;
@@ -141,16 +149,15 @@ section.conect div span {
 section.conect div span:hover {
   color: #ff4d4d;
   transform: translateY(-5px) scale(1.05);
-  text-shadow: 0 0 15px rgba(255, 77, 77, 0.6), 
-               0 0 30px rgba(255, 77, 77, 0.4);
+  text-shadow: 0 0 15px rgba(255, 77, 77, 0.6), 0 0 30px rgba(255, 77, 77, 0.4);
 }
-.reveal-warpper{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 150px;
+.reveal-warpper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 150px;
 }
-.reveal-container{
+.reveal-container {
   position: relative;
   display: block;
   overflow: hidden;
@@ -167,4 +174,15 @@ section.conect div span:hover {
   height: 100%;
   background: #fff;
   z-index: 2;
+}
+@media (max-width: 500px) {
+  .loader {
+    padding: 0px;
+  }
+  .loader svg {
+    width: 100%;
+  }
+  section.conect div {
+    width: 70%;
+  }
 }
