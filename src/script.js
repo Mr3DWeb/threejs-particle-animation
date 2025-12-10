@@ -238,7 +238,7 @@ const PhoneTL = gsap.timeline({
   scrollTrigger:{
     trigger:".conect",
     start:"top center",
-    end :"bottom bottom",
+    end :"center center",
     scrub:1,
   }
 });
@@ -259,7 +259,7 @@ PhoneTL
   ease:"power2.inOut",
   duration:1.5
 },">")
-.to(".split",{
+.to("section.conect div span",{
   opacity:1,
   duration:1,
   ease:"power1.inOut"
