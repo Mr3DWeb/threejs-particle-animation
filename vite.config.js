@@ -4,7 +4,7 @@ export default {
   root: 'src/',
   publicDir: '../static/',
   
-  base: '/particles-project/',
+  base: '/threejs-particle-animation/',
   
   server: {
     host: true,

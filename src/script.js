@@ -99,7 +99,7 @@ const smoother = ScrollSmoother.create({
   smoothTouch: 0.1
 });
 //loadimage
-loadImage('phone.png').then((phoneImg) => {
+loadImage('/threejs-particle-animation/phone.png').then((phoneImg) => {
 const responsiveData = getResponsiveData();
 //-----Particels
 const pGeo = new THREE.BufferGeometry();
